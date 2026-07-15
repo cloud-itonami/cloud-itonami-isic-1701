@@ -1,0 +1,33 @@
+{:itonami.blueprint/id "cloud-itonami-isic-1701"
+ :itonami.blueprint/name "Manufacture of pulp, paper and paperboard"
+ :itonami.blueprint/isic-rev5 "1701"
+ :itonami.blueprint/domain :pulp-paper/plant-operations
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:worker-safety :environmental-stewardship :resource-efficiency]
+ :itonami.blueprint/governor :pulp-paper-plant-operations-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :cae]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "PulpPaperAdvisor ⊣ Pulp & Paper Plant Operations Governor, langgraph-clj
+ StateGraph, append-only audit ledger. A plant OPERATIONS COORDINATION
+ actor for pulp/paper mill operations (chemical/mechanical pulping
+ digesters, paper machines, effluent-treatment plant) -- not direct
+ pulping/paper-machine-equipment operation or effluent-discharge
+ authorization authority. Four ops (`:log-production-batch` /
+ `:schedule-maintenance` / `:flag-safety-concern` /
+ `:coordinate-shipment`), all `:effect :propose` only. Ten concrete
+ governor checks elaborate this blueprint's HARD invariants:
+ propose-only effect, closed op allowlist, closed proposal-effect
+ allowlist (no direct pulping/paper-machine-equipment control),
+ permanent effluent-discharge-authorization block, independent
+ equipment verification/registration before maintenance scheduling,
+ independent batch verification/registration before shipment
+ coordination, independent shipment-volume recompute against the
+ batch's own logged volume, double-schedule guard, pulp/paper-grade
+ validation, and ISO-brightness plausibility validation. Safety-concern
+ flagging (chemical hazard / effluent-discharge concern /
+ equipment hazard) ALWAYS escalates to a human plant supervisor;
+ `:log-production-batch` is the only op eligible to auto-commit, and
+ only at phase 3 when governor-clean."}
