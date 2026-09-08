@@ -4,7 +4,7 @@
   Drives the REAL actor stack (pulppaper.operation -> pulppaper.governor -> pulppaper.store).
   No invented numbers, no timestamps, byte-identical across reruns."
   (:require [jp-go-dds.skin]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [pulppaper.store :as store]
             [pulppaper.operation :as op]
             [pulppaper.phase :as phase]
