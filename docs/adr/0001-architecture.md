@@ -170,11 +170,11 @@ reporting systems) -- this is a standalone coordinator blueprint.
 
 ## Verification
 
-- `cloud-itonami-isic-1701`: `clojure -M:test` green (71 tests / 200
+- `cloud-itonami-isic-1701`: `kbb -M:test` green (71 tests / 200
   assertions / 0 failures / 0 errors, run from an independent fresh
   clone at the merge commit -- see the superproject ADR and
   `kotoba-lang/industry` registry entry for the exact re-verification
-  output), `clojure -M:lint` clean, `clojure -M:dev:run` demo narrative
+  output), `kbb -M:lint` clean, `kbb -M:dev:run` demo narrative
   exercises proposal submission, escalation, and every HARD-hold
   scenario directly (not-propose-effect, unknown-op,
   equipment-not-verified, batch-not-verified,
@@ -188,4 +188,4 @@ reporting systems) -- this is a standalone coordinator blueprint.
 - `deps.edn` pins `io.github.kotoba-lang/langgraph` and
   `io.github.kotoba-lang/langchain` via `:local/root` directly in the
   top-level `:deps` (not only under a `:dev` alias), so a bare
-  `clojure -M:test` resolves offline inside the monorepo checkout.
+  `kbb -M:test` resolves offline inside the monorepo checkout.
