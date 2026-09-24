@@ -1,0 +1,32 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README has no "Robotics premise" section. The mill runs digesters, the
+;; paper machine and effluent treatment. Its physical work here: pumping
+;; dilute stock in the approach flow to the headbox, and heating the wet web
+;; on the steam-heated dryer cylinders.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-1701"
+ :cases
+ [{:id :approach-flow-to-headbox
+   :kind :pipe-flow
+   :procedure "fan pump drives dilute stock (about 1 % consistency, treated as water) through the approach-flow line to the headbox"
+   :params {:diameter-m 0.30 :length-m 60.0 :roughness-m 1.5e-6
+            :density-kg-m3 1000.0 :viscosity-pa-s 1.0e-3 :pump-efficiency 0.75 :elevation-m 6.0}
+   :sweep {:param :q-m3s :values [0.10 0.20 0.30 0.40 0.50]}
+   :quantity :pressure-drop-pa
+   :limit {:max 1.5e5 :basis "estimate: 1.5 bar line loss budget of the fan pump before the headbox pressure it must also supply"}
+   :boundary {:lo 0.05 :hi 1.5}}
+  {:id :dryer-cylinder-web-heat
+   :kind :thermal
+   :procedure "the wet paper web is pressed by the dryer felt against steam-heated dryer cylinders; the felt-side face is judged when it reaches 90 C over the cumulative cylinder contact"
+   :params {:conductivity-w-mk 0.15 :density-kg-m3 800.0 :specific-heat-j-kgk 2500.0
+            :t0-c 45.0 :t-hot-c 140.0 :h-front-w-m2k 800.0 :t-back-ambient-c 60.0 :h-back-w-m2k 30.0
+            :threshold-c 90.0 :duration-s 10.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.0001 0.0002 0.0003 0.0004 0.0005]}
+   :quantity :time-to-threshold-s
+   :limit {:max 3.0 :basis "estimate: 3 s of cumulative cylinder contact for the web to leave the first dryer group at 90 C"}
+   :boundary {:lo 0.00005 :hi 0.001}}]}
